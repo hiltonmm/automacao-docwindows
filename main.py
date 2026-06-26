@@ -45,7 +45,6 @@ def main():
     logging.info("==================================================")
 
 
-    git
     try:
         logging.info("--> Executando Passo 1: Login")
         data_alvo = iniciar.executar(USUARIO, SENHA, os.getenv("DOC_PATH"))
