@@ -74,13 +74,13 @@ def main():
 
     try:
         # 1 - Entrar no sistema
-       # logging.info("--> Executando Passo 1: Login")
-       # data_alvo = iniciar.executar(USUARIO, SENHA, DOC_PATH)
-       # logging.info(f"O módulo de login devolveu a data: {data_alvo}. Pronto para o Passo 2.")
+        logging.info("--> Executando Passo 1: Login")
+        data_alvo = iniciar.executar(USUARIO, SENHA, DOC_PATH)
+        logging.info(f"O módulo de login devolveu a data: {data_alvo}. Pronto para o Passo 2.")
 
         # 2 - Gerar Relatórios
-       # logging.info("--> Executando Passo 2: Emissão de Relatórios")
-       # relatorios.executar(data_alvo, DOC_PATH)
+        logging.info("--> Executando Passo 2: Emissão de Relatórios")
+        relatorios.executar(data_alvo, DOC_PATH)
 
         # 3 - Auditoria Nível 1, 2 e 3
         logging.info("--> Executando Passo 3: Auditoria de Relatórios (Atos x Selos)")
@@ -88,7 +88,7 @@ def main():
         pasta_tmp = os.path.join(diretorio_atual, "tmp")
 
         # Executa a conferência cega
-        auditoria.executar("18062026", pasta_tmp)
+        auditoria.executar(data_alvo, pasta_tmp)
 
         # Consulta o contexto para ver se houve divergências
         resultado = context.resultado_auditoria

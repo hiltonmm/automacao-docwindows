@@ -278,6 +278,30 @@ def gerar_relatorio_financeiro(app: Application, data: str, d: str, m: str, a: s
     imprimir_e_salvar_pdf(vis, f"Atos-{d}-{m}-{a}.pdf")
     fechar_janelas_em_cadeia(app)
 
+# noinspection PyUnusedLocal,PyUnresolvedReferences,SpellCheckingInspection
+def gerar_relatorio_caixa(app: Application, data_alvo: str, dia: str, mes: str, ano: str) -> None:
+    """Navega pelos menus, preenche a data e imprime o relatório de caixa."""
+    app.top_window().set_focus()
+
+    # Navegação inicial nos menus
+    send_keys('{VK_MENU}{RIGHT 7}{DOWN 3}{RIGHT}{DOWN 2}{ENTER}')
+    time.sleep(2)
+
+    janela_relatorio = app.top_window()
+
+    # Preenchimento de datas
+    janela_relatorio.child_window(auto_id="txtData1", control_type="Edit").type_keys(f"{{HOME}}{data_alvo}")
+    janela_relatorio.child_window(auto_id="txtData2", control_type="Edit").type_keys(f"{{HOME}}{data_alvo}")
+
+    # Gerar Relatório
+    btn_gerar = janela_relatorio.child_window(auto_id="btnGerar", control_type="Button")
+    btn_gerar.set_focus()
+    send_keys('{ENTER}')
+
+    # Finalização
+    janela_visualizacao = aguardar_carregamento_relatorio(app)
+    imprimir_e_salvar_pdf(janela_visualizacao, f"Caixa-{dia}-{mes}-{ano}.pdf")
+    fechar_janelas_em_cadeia(app)
 
 def executar(data_alvo: str, caminho_exe: str) -> None:
     """Entrada do módulo."""
@@ -285,3 +309,4 @@ def executar(data_alvo: str, caminho_exe: str) -> None:
     d, m, a = data_alvo[0:2], data_alvo[2:4], data_alvo[4:8]
     gerar_relatorio_selos(app, data_alvo, d, m, a)
     gerar_relatorio_financeiro(app, data_alvo, d, m, a)
+    gerar_relatorio_caixa(app, data_alvo, d, m, a)
