@@ -15,6 +15,7 @@ import modulos.relatorios as relatorios
 import modulos.auditoria as auditoria
 from modulos.contexto import context
 from modulos import gerador_xml
+from modulos import validador_xsd
 
 # ==========================================
 # 1. Configuração do sistema de logs
@@ -100,6 +101,10 @@ def main():
         logging.info("--> Executando Passo 4: Geração dos arquivos XML")
         gerador_xml.executar(data_alvo)
         logging.info("Arquivo XML gerado com sucesso!")
+
+        # 5 - Validação XSD Rigorosa
+        logging.info("--> Executando Passo 4.5: Validação de Estrutura XSD")
+        validador_xsd.executar(data_alvo)
 
          # --- SE CHEGAR AQUI, DEU TUDO CERTO ---
         exibir_alerta_sucesso()
