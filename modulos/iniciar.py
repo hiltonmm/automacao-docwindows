@@ -93,6 +93,7 @@ def obter_data_interface():
     root = tk.Tk()
     root.title("Configuração do Robô")
     root.geometry("320x160")
+    root.eval('tk::PlaceWindow . center')
     root.attributes("-topmost", True)
     root.protocol("WM_DELETE_WINDOW", cancelar_operacao)
 
