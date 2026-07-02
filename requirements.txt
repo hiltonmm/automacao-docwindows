@@ -4,3 +4,4 @@ pdfplumber
 python-dotenv
 pywin32
 lxml
+fpdf2
