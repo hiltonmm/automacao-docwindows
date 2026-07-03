@@ -14,7 +14,7 @@ import modulos.relatorios as relatorios
 import modulos.auditoria as auditoria
 from modulos.contexto import context
 from modulos import gerador_xml
-from modulos import validador_xsd
+#from modulos import validador_xsd ## DESATIVAÇÃO TEMPORARIA
 from modulos import relatorio_final
 from modulos import ui
 
@@ -102,7 +102,15 @@ def main():
 
             # 4 e 5 - XML e XSD
             gerador_xml.executar(data_alvo)
-            validador_xsd.executar(data_alvo)
+
+            ###########################################################
+            ##  VALIDADOR XSD DESABILITADO PROVISORIAMENTE           ##
+            ##  POSTERIORMENTE SERÁ CRIADA UM PREFERÊCIA DE USUARIO  ##
+            ##  PARA ATIVAÇÃO DA FUNÇÃO                              ##
+            ###########################################################
+            #validador_xsd.executar(data_alvo)
+
+
 
             # 6 - Finalização
             relatorio_final.executar(data_alvo)
