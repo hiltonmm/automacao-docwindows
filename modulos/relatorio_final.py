@@ -5,7 +5,7 @@ import logging
 from typing import Any
 from fpdf import FPDF
 import pdfplumber
-from .contexto import context
+from modulos.contexto import context
 import win32api
 import win32print
 
@@ -129,6 +129,9 @@ def salvar_relatorio_pdf(data_alvo: str):
 def executar(data_alvo: str):
     """Orquestra a leitura do PDF de caixa, a geração do relatório final e a impressão da fila."""
 
+    ## Em Ambiente de teste use False para evitar a impressão dos relatórios
+    habilita_impressao = False
+
     # 1. Preparação de caminhos e nomes de arquivos
     diretorio_atual = str(os.path.abspath(__file__))
     diretorio_base = str(os.path.dirname(os.path.dirname(diretorio_atual)))
@@ -158,17 +161,19 @@ def executar(data_alvo: str):
         f"Relatorio_Fechamento_{data_formatada}.pdf"
     ]
 
-    logging.info("--> Iniciando fila de impressão automática.")
-
-    for nome_arq in arquivos_para_imprimir:
-        caminho_completo = os.path.join(caminho_tmp, nome_arq)
-        if os.path.exists(caminho_completo):
-            # Chama a função de impressão que utiliza win32api
-            if imprimir_pdf(caminho_completo):
-                logging.info(f"Impressão enviada: {nome_arq}")
+    if habilita_impressao:
+        logging.info("--> Iniciando fila de impressão automática.")
+        for nome_arq in arquivos_para_imprimir:
+            caminho_completo = os.path.join(caminho_tmp, nome_arq)
+            if os.path.exists(caminho_completo):
+                # Chama a função de impressão que utiliza win32api
+                if imprimir_pdf(caminho_completo):
+                    logging.info(f"Impressão enviada: {nome_arq}")
+                else:
+                    logging.error(f"Erro ao imprimir: {nome_arq}")
             else:
-                logging.error(f"Erro ao imprimir: {nome_arq}")
-        else:
-            logging.warning(f"Arquivo não encontrado para impressão: {nome_arq}")
+                logging.warning(f"Arquivo não encontrado para impressão: {nome_arq}")
+    else:
+        logging.info("Mode de Teste - Impressão desabilitada.")
 
     logging.info("--> Fluxo de finalização concluído.")
