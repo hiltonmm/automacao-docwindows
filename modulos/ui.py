@@ -2,10 +2,12 @@
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
+from modulos.configurador import carregar_config, salvar_config
 
 def obter_data_interface():
     """Gerencia a interface de captura e validação de data."""
     resultado_data = []
+    prefs = carregar_config()
 
     def formatar_data(event):
         if event.keysym == "BackSpace":
@@ -24,6 +26,7 @@ def obter_data_interface():
         try:
             datetime.strptime(data_digitada, "%d/%m/%Y")
             resultado_data.append(data_digitada.replace("/", ""))
+            salvar_config("validar_xsd", checkbox_var.get())
             root.destroy()
         except ValueError:
             messagebox.showerror("Data Inválida", "Por favor, digite uma data válida no formato DD/MM/AAAA.")
@@ -34,7 +37,7 @@ def obter_data_interface():
 
     root = tk.Tk()
     root.title("Configuração do Robô")
-    root.geometry("320x160")
+    root.geometry("320x220")
     # Centralização forçada
     root.eval('tk::PlaceWindow . center')
     root.attributes("-topmost", True)
@@ -46,6 +49,11 @@ def obter_data_interface():
     entry_data = tk.Entry(root, font=("Arial", 14), justify="center", width=12)
     entry_data.pack(pady=5)
     entry_data.bind("<KeyRelease>", formatar_data)
+
+    checkbox_var = tk.BooleanVar(value=prefs.get("validar_xsd", True))
+    chk = tk.Checkbutton(root, text="Habilitar Validação XSD", variable=checkbox_var)
+    chk.pack(pady=10)
+
 
     btn_iniciar = tk.Button(root, text="Iniciar Automação", command=validar_e_salvar, bg="#4CAF50", fg="white",
                             font=("Arial", 10, "bold"))

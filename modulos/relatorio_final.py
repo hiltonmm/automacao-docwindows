@@ -8,7 +8,9 @@ import pdfplumber
 from modulos.contexto import context
 import win32api
 import win32print
+from modulos.configurador import carregar_config
 
+prefs = carregar_config()
 
 def imprimir_pdf(caminho_pdf: str):
     """Envia um arquivo PDF para a impressora padrão do Windows."""
@@ -161,7 +163,7 @@ def executar(data_alvo: str):
         f"Relatorio_Fechamento_{data_formatada}.pdf"
     ]
 
-    if habilita_impressao:
+    if prefs["imprimir_relatorio"]:
         logging.info("--> Iniciando fila de impressão automática.")
         for nome_arq in arquivos_para_imprimir:
             caminho_completo = os.path.join(caminho_tmp, nome_arq)
