@@ -5,6 +5,7 @@ import logging
 from typing import Any
 from fpdf import FPDF
 import pdfplumber
+from pdfplumber import pdf
 from modulos.contexto import context
 import win32api
 import win32print
@@ -96,7 +97,9 @@ def salvar_relatorio_pdf(data_alvo: str):
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(0, 10, f"ATOS PRATICADOS EM {data_formatada1}", align='C')
     pdf.ln(20)
-
+    pdf.cell(0, 10, f"Fechamento Financeiro", align='L')
+    pdf.ln(10)
+    
     # Função interna para adicionar linhas (SEM ARGUMENTO ln=1 dentro da célula)
     def add_linha(desc: str, valor: float, negrito: bool = False):
         pdf.set_font("Arial", 'B' if negrito else '', 12)
@@ -111,7 +114,7 @@ def salvar_relatorio_pdf(data_alvo: str):
     add_linha("(-) Depósito Prévio em Espécie", dp)
     add_linha("SUBTOTAL 2 (Valor do Oficial)", sub2, True)
     add_linha("(+) Retenção ISS", iss)
-    add_linha("SUBTOTAL 3 (Valor transferência Oficial)", sub3, True)
+    add_linha("SUBTOTAL 3 (Valor da transferência ao Oficial)", sub3, True)
 
     # Bloco de Quantidades
     pdf.ln(10)
@@ -122,6 +125,31 @@ def salvar_relatorio_pdf(data_alvo: str):
     pdf.set_font("Arial", size=12)
     texto_quantidades = " | ".join([f"{tipo}: {qtd}" for tipo, qtd in quantidades.items()])
     pdf.cell(0, 10, texto_quantidades, border=1, align='C')
+
+    #Bloco de Valores das GRERJs
+       
+    FETJ = to_float(fin.get('FETJ', 0.0))
+    FUNDPERJ = to_float(fin.get('FUNDPERJ', 0.0))
+    FUNPERJ = to_float(fin.get('FUNPERJ', 0.0))
+    FUNARPEN = to_float(fin.get('FUNARPEN', 0.0))
+    FUNPGALERJ = to_float(fin.get('FUNPGALERJ', 0.0))
+    FUNPGT = to_float(fin.get('FUNPGT', 0.0))
+    FUNDAC_PGUERJ = to_float(fin.get('FUNDAC_PGUERJ', 0.0))
+    Total_GRERJ = FETJ + FUNDPERJ + FUNPERJ + FUNARPEN + FUNPGALERJ + FUNPGT + FUNDAC_PGUERJ
+
+    pdf.ln(20)
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(0, 10, f"VALORES DA GRERJ", align='C')
+    pdf.ln(10)
+
+    add_linha("FETJ", FETJ)
+    add_linha("FUNDPERJ", FUNDPERJ)
+    add_linha("FUNPERJ", FUNPERJ)
+    add_linha("FUNARPEN", FUNARPEN)
+    add_linha("FUNPGALERJ", FUNPGALERJ)
+    add_linha("FUNPGT", FUNPGT)
+    add_linha("FUNDAC_PGUERJ", FUNDAC_PGUERJ)
+    add_linha("TOTAL GRERJ", Total_GRERJ, True)
 
     # Salva o arquivo
     pdf.output(caminho_completo)
