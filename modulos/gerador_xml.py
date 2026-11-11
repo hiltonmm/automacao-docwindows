@@ -152,8 +152,8 @@ def auditar_caixa_de_saida(data_alvo: str) -> None:
     padroes_esperados = {
         "1766_RCPN": f"1766_{data_xml}_RCPN_I_*.xml",
         "1766_RIT": f"1766_{data_xml}_RIT_I_*.xml",
-        "1766_Notas": f"1766_{data_xml}_Notas_I_*.xml",
-        "7515_RCPN": f"7515_{data_xml}_RCPN_I_*.xml"
+        "1766_Notas": f"1766_{data_xml}_Notas_I_*.xml"
+ 
     }
 
     arquivos_encontrados = {}
