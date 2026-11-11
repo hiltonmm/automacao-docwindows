@@ -1,4 +1,4 @@
 {
-    "validar_xsd": true,
+    "validar_xsd": false,
     "imprimir_relatorio": true
 }

@@ -254,6 +254,7 @@ def executar(data_alvo: str, caminho_exe: str) -> None:
     """Entrada do módulo."""
     app = Application(backend="uia").connect(path=caminho_exe)
     d, m, a = data_alvo[0:2], data_alvo[2:4], data_alvo[4:8]
+    """send_keys('{ENTER}')"""
     gerar_relatorio_selos(app, data_alvo, d, m, a)
     gerar_relatorio_financeiro(app, data_alvo, d, m, a)
     gerar_relatorio_caixa(app, data_alvo, d, m, a)
