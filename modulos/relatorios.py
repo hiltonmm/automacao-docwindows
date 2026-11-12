@@ -210,8 +210,10 @@ def gerar_relatorio_financeiro(app: Application, data: str, d: str, m: str, a: s
     indices_para_desmarcar = [
         0, 2, 3, 4, 26, 38, 39, 61, 62, 63, 64, 65, 66, 67, 68, 69,
         70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84,
-        85, 86, 87, 88, 89, 90, 91, 92
+        85, 86, 87, 88, 89, 90, 91, 92,
+        93  # 1º dos 7 novos atos (índices 93 a 99)
     ]
+    total_atos = 100  # 93 atos antigos (0-92) + 7 novos (93-99)
 
     try:
         linha_zero = janela_filtro.child_window(title=" Linha 0", control_type="DataItem")
@@ -222,7 +224,7 @@ def gerar_relatorio_financeiro(app: Application, data: str, d: str, m: str, a: s
             send_keys('{SPACE}')
             time.sleep(0.1)
 
-        for linha_atual in range(1, 93):
+        for linha_atual in range(1, total_atos):
             send_keys('{DOWN}')
             time.sleep(0.05)
             if linha_atual in indices_para_desmarcar:
